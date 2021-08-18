@@ -5,7 +5,7 @@ Created by Yair Nava
 
 Install dependencies:
 
-    Within the root directory install dependecies by opening the terminal and typing the following 
+Within the root directory install dependecies by opening the terminal and typing the following 
     
     npm install
 
