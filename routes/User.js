@@ -18,7 +18,7 @@ userRouter.post('/new',(req,res)=>{
         User.create(newUser)
         .then(async newU => {
           if(newU){
-            res.status(201).json({message : {msgBody : "Cuenta creada con éxito", msgError: false}});
+            res.status(200).json({message : {msgBody : "Cuenta creada con éxito", msgError: false}});
           } else {
             res.status(500).json({message : {msgBody : "Ocurrió un error al guardar usuario", msgError: true}});
           }
@@ -30,12 +30,12 @@ userRouter.post('/new',(req,res)=>{
 // Get all users
 userRouter.get('/getAll',(req,res)=>{
   console.log("Getting all users");
-  User.find({role:"user"}).exec((err,document)=>{
+  User.find({role:"user"}).exec((err,users)=>{
         if(err){
           return next(error);
         }
         else{
-            res.json(document);
+            res.status(200).json(users);
         }
     });
 });
@@ -48,7 +48,7 @@ userRouter.route('/get/:username').get((req, res, next) => {
     if (error) {
       return next(error)
     } else {
-      res.json(data[0]);
+      res.status(200).json(data[0]);
     }
   })
 });
@@ -81,7 +81,7 @@ userRouter.delete('/delete/:userId',(req, res, next) => {
     if (error) {
       res.status(500).json({message : {msgBody : "Ocurrió un error al eliminar el usuario", msgError: true}});
     } else {
-      res.status(201).json({message : {msgBody : "Cuenta eliminada con éxito", msgError: false}});
+      res.status(200).json({message : {msgBody : "Cuenta eliminada con éxito", msgError: false}});
     }
   })
 });
