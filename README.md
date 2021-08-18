@@ -12,3 +12,7 @@ Within the root directory install dependecies by opening the terminal and typing
 Run server:
 
     npm start
+
+Unit Tests:
+
+    npm test

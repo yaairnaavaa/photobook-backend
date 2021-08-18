@@ -20,7 +20,7 @@ userRouter.get('/getImages',(req, res, next) => {
         path: 'user', model: 'User'
     }).then(
         images => {       
-            res.json(images);
+            res.status(200).json(images);
         }
     );
 });
@@ -32,7 +32,7 @@ userRouter.get('/getUserImages/:userId',(req, res, next) => {
     Image.find({user:userId})
     .then(
         images => {       
-            res.json(images);
+            res.status(200).json(images);
         }
     );
 });
@@ -46,7 +46,7 @@ userRouter.get('/getImage/:imageId',(req, res, next) => {
         path: 'user', model: 'User'
     }).then(
         images => {       
-            res.json(images);
+            res.status(200).json(images);
         }
     );
 });
@@ -61,6 +61,7 @@ userRouter.post('/saveImage',async (req, res, next) => {
 
     const newImage = {
         user: data.userId,
+        name: data.name,
         description: data.description,
         imageURL: imageUpload.url,
         public_id: imageUpload.public_id
@@ -70,7 +71,7 @@ userRouter.post('/saveImage',async (req, res, next) => {
     .then(async newImage => {
         if(newImage){
             await fs.unlink(image.path);
-            res.status(201).json({message : {msgBody : "Imagen almacenada con éxito", msgError: false}});
+            res.status(200).json({message : {msgBody : "Imagen almacenada con éxito", msgError: false}});
         } else {
             res.status(500).json({message : {msgBody : "Ocurrió un error al guardar imagen", msgError: true}});
         }
