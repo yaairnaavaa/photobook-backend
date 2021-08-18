@@ -32,10 +32,12 @@ const User = require('./models/User');
 // Routes
 const userRouter = require('./routes/User');
 const imageRouter = require('./routes/Image');
+const profileRouter = require('./routes/Profile');
 
 // Use routes
 app.use('/user',userRouter);
 app.use('/image',imageRouter);
+app.use('/profile',profileRouter);
 app.use('/public',express.static(`${__dirname}/storage/imgs`));
 
 // Conection to mongodb

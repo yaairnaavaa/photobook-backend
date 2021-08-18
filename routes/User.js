@@ -68,7 +68,7 @@ userRouter.route('/update').put((req, res, next) => {
       if (error) {
         return next(error);
       } else {
-        res.json({message : {msgBody : "User updated successfully", msgError : false}});
+        res.status(200).json({message : {msgBody : "User updated successfully", msgError : false}});
       }
   })
 });
