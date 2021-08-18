@@ -43,6 +43,8 @@ mongoose.connect(`mongodb://${appConfig.dbConfig.host}:${appConfig.dbConfig.port
     console.log('Successfully connected to database photoBook-db');
 });
 
+createAdminUser();
+
 // Assign port
 const PORT = (process.env.PORT || appConfig.appConfig.port);
 
@@ -50,3 +52,35 @@ const PORT = (process.env.PORT || appConfig.appConfig.port);
 app.listen(PORT, () => {
     console.log(`Server started on port: ${PORT}`)
 });
+
+
+function createAdminUser(){
+    // Admin data
+    const adminUser ={
+        username:"admin",
+        password:"123456",
+        role:"admin"
+    }
+
+    // Verified if admin user exist
+    User.findOne({username:'admin'},(err,user)=>{
+        if(err) {
+            console.log("Error has occured");
+        }
+        if(user) {
+            console.log("Admin user is already created");
+        }
+        else{
+            // If not exist then create
+            const newUser = new User(adminUser);
+            newUser.save(err=>{
+                if(err) {
+                    console.log("Error has occured");
+                }
+                else {
+                    console.log("Admin user has been created");
+                }
+            });
+        }
+    });
+}
