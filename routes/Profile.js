@@ -37,7 +37,8 @@ profileRouter.route('/get/:userId').get((req, res, next) => {
     User.find({_id : userId},{ password: 0, role: 0 })
     .populate({
         path: 'profile', model: 'Profile'
-    }).then(
+    })
+    .then(
         user => {       
             console.log(user);
             res.status(200).json(user);

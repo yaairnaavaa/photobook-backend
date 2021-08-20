@@ -60,7 +60,7 @@ function createAdminUser(){
     // Admin data
     const adminUser ={
         username:"admin",
-        password:"123456",
+        password:"1234",
         role:"admin"
     }
 

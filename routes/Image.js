@@ -17,8 +17,17 @@ userRouter.get('/getImages',(req, res, next) => {
     console.log("Get images");
     Image.find()
     .populate({
-        path: 'user', model: 'User'
-    }).then(
+        path: 'user',
+        model: 'User',
+        select: {
+            password: 0
+        },
+        populate: {
+            path: 'profile',
+            model: 'Profile'
+        }
+    })
+    .then(
         images => {       
             res.status(200).json(images);
         }
@@ -30,6 +39,12 @@ userRouter.get('/getUserImages/:userId',(req, res, next) => {
     console.log("Get user images");
     const userId = req.params.userId;
     Image.find({user:userId})
+    .populate({
+        path: 'user', model: 'User',
+        select: {
+            password: 0
+        }
+    })
     .then(
         images => {       
             res.status(200).json(images);
@@ -43,8 +58,23 @@ userRouter.get('/getImage/:imageId',(req, res, next) => {
     const imageId = req.params.imageId;
     Image.find({_id:imageId})
     .populate({
-        path: 'user', model: 'User'
-    }).then(
+        path: 'user',
+        model: 'User',
+        select: {
+            password: 0
+        }
+    })
+    .populate({
+        path: 'coments.user', model: 'User',
+        select: {
+            password: 0
+        },
+        populate: {
+            path: 'profile',
+            model: 'Profile'
+        }
+    })
+    .then(
         images => {       
             res.status(200).json(images);
         }
@@ -59,6 +89,7 @@ userRouter.post('/saveImage',async (req, res, next) => {
 
     const imageUpload = await uploadImageCloudinary(image);
 
+    console.log(data);
     const newImage = {
         user: data.userId,
         name: data.name,
@@ -71,12 +102,38 @@ userRouter.post('/saveImage',async (req, res, next) => {
     .then(async newImage => {
         if(newImage){
             await fs.unlink(image.path);
-            res.status(200).json({message : {msgBody : "Imagen almacenada con éxito", msgError: false}});
+            res.status(200).json({message : {msgBody : "Image Stored Successfully", msgError: false}});
         } else {
-            res.status(500).json({message : {msgBody : "Ocurrió un error al guardar imagen", msgError: true}});
+            res.status(500).json({message : {msgBody : "An error occurred while saving the image", msgError: true}});
         }
 
     });
+});
+
+// Save comment
+userRouter.put('/saveComment',async (req, res, next) => {
+    console.log("Save comment image");
+    const data = req.body;
+    console.log(data);
+    Image.updateOne(
+    {
+        _id: data.imgId
+    }, 
+    {
+        $push: {
+            coments : {
+                user : data.comment.user,
+                comment : data.comment.comment.newComment
+            }
+        }
+    }, 
+    (error, data) => {
+        if (error) {
+            res.status(500).json({message : {msgBody : "Comment don't save", msgError : true}});
+        } else {
+            res.status(200).json({message : {msgBody : "Comment save", msgError : false}});
+        }
+    })
 });
 
 
