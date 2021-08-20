@@ -17,9 +17,9 @@ profileRouter.post('/new',(req,res)=>{
                 { _id: userId }, { $set: {profile : newP._id} }, 
                 (error, data) => {
                     if (error) {
-                        res.status(500).json({message : {msgBody : "Ocurrió un error al guardar perfil", msgError: true}});
+                        res.status(500).json({message : {msgBody : "An error occurred while saving profile", msgError: true}});
                     } else {
-                        res.status(200).json({message : {msgBody : "Perfil creado con éxito", msgError: false}});
+                        res.status(200).json({message : {msgBody : "Profile created successfully", msgError: false}});
                     }
               })
         } else {
